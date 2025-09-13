@@ -7,7 +7,7 @@ env_file = os.getenv("ENV_FILE", ".env")
 config = Config(RepositoryEnv(env_file))
 DEBUG = config("DEBUG", default=False, cast=bool)
 SECRET_KEY = config("SECRET_KEY")
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
 
 DATABASES = {
     "default": dj_database_url.parse(config("DATABASE_URL"))
