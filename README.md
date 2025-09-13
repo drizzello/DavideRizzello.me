@@ -11,9 +11,10 @@ A Django-based personal website with production-ready deployment configuration u
 - **Responsive Design**: Clean, modern CSS styling with mobile-friendly layout
 
 ### Technical Features
-- **Environment-based Configuration**: Separate settings for development and production with custom .env file support
+- **Unified Configuration**: Single Gunicorn config with environment-based behavior (dev/prod via ENV variable)
+- **Environment-based Settings**: Separate settings for development and production with custom .env file support
 - **Database Flexibility**: SQLite for development, PostgreSQL for production
-- **Static File Management**: WhiteNoise for efficient static file serving in production
+- **Static File Management**: Caddy serves static files directly in production, Django in development
 - **Security**: Production-ready security settings with SSL/HTTPS enforcement, HSTS headers, and secure cookies
 - **Process Management**: Automated service management with Makefile commands
 - **Environment File Validation**: Automatic .env file detection and validation
@@ -23,9 +24,9 @@ A Django-based personal website with production-ready deployment configuration u
 
 - **Backend**: Django 5.2.5
 - **Database**: SQLite (dev) / PostgreSQL (prod)
-- **WSGI Server**: Gunicorn
+- **WSGI Server**: Gunicorn (unified config with environment-based behavior)
 - **Reverse Proxy**: Caddy
-- **Static Files**: WhiteNoise
+- **Static Files**: Caddy (prod) / Django (dev)
 - **Configuration**: python-decouple
 - **Process Management**: Makefile
 
@@ -56,8 +57,7 @@ personal_website/
 ├── staticfiles/                    # Collected static files (prod)
 ├── Caddyfile.dev                   # Caddy config for development
 ├── Caddyfile.prod                  # Caddy config for production
-├── gunicorn.dev.conf.py            # Gunicorn config for development
-├── gunicorn.prod.conf.py           # Gunicorn config for production
+├── gunicorn.prod.conf.py           # Unified Gunicorn config (dev/prod via ENV)
 ├── Makefile                        # Service management commands
 └── manage.py                       # Django management script
 ```
@@ -100,7 +100,7 @@ personal_website/
    ```env
    SECRET_KEY=your-production-secret-key
    DEBUG=False
-   ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+   ALLOWED_HOSTS=daviderizzello.me,www.daviderizzello.me
    DATABASE_URL=postgresql://user:password@localhost/dbname
    ```
 
@@ -130,7 +130,7 @@ make up-dev
 ```
 
 This will:
-- Start Gunicorn with development settings
+- Start Gunicorn with development settings (auto-reload enabled)
 - Start Caddy reverse proxy
 - Serve the site at `https://localhost`
 
@@ -174,8 +174,8 @@ make down-dev
 ### Production Features
 
 - **Security Hardening**: SSL redirect, secure cookies, CSRF protection, HSTS headers
-- **Optimized Static Files**: Compressed and cached static files
-- **Process Management**: Multiple Gunicorn workers for performance
+- **Optimized Static Files**: Caddy serves static files directly for better performance
+- **Process Management**: CPU-optimized Gunicorn workers (CPU count * 2 + 1)
 - **Reverse Proxy**: Caddy handles SSL termination and static file serving
 - **Database**: PostgreSQL for production reliability
 - **Environment Validation**: Automatic .env file detection and validation
@@ -185,10 +185,10 @@ make down-dev
 
 The production setup includes:
 
-- **Gunicorn**: Multi-worker WSGI server with CPU-optimized worker count
-- **Caddy**: Automatic HTTPS, static file serving, reverse proxy
-- **WhiteNoise**: Efficient static file serving with compression
-- **Security**: SSL enforcement, secure cookies, CSRF protection
+- **Gunicorn**: Multi-worker WSGI server with CPU-optimized worker count (CPU count * 2 + 1)
+- **Caddy**: Automatic HTTPS, direct static file serving, reverse proxy to Gunicorn
+- **Static Files**: Served directly by Caddy from `/home/dr/DavideRizzello.me/personal_website/staticfiles`
+- **Security**: SSL enforcement, secure cookies, CSRF protection, HSTS headers
 
 ## 📊 Database Models
 
@@ -219,8 +219,8 @@ The production setup includes:
 
 ### Settings Structure
 - **Base Settings**: Common configuration with environment file validation
-- **Development**: Debug mode, console email, SQLite, `.env.dev` support
-- **Production**: Security hardening, PostgreSQL, optimized static files, `.env.prod` support
+- **Development**: Simplified settings inheriting from base, debug mode, console email, SQLite
+- **Production**: Security hardening, PostgreSQL, environment file validation, `.env.prod` support
 
 ### Environment Variables
 - `SECRET_KEY`: Django secret key
@@ -235,18 +235,25 @@ The production setup includes:
 - **Validation**: File existence validation with helpful error messages
 - **Separate Files**: Support for `.env.dev` and `.env.prod` files
 
+### Unified Gunicorn Configuration
+- **Single Config File**: `gunicorn.prod.conf.py` handles both dev and prod environments
+- **Environment Detection**: Uses `ENV` environment variable to determine behavior
+- **Development**: Auto-reload enabled, 3 workers (via separate `gunicorn.dev.conf.py`)
+- **Production**: CPU-optimized workers (CPU count * 2 + 1), no auto-reload, 120s timeout
+- **Settings Module**: Automatically sets correct Django settings module based on environment
+
 ## 📝 Available Commands
 
 ### Makefile Commands
 
 | Command | Description |
 |---------|-------------|
-| `make up-dev` | Start development environment with .env.dev |
+| `make up-dev` | Start development environment with .env.dev (uses gunicorn.dev.conf.py) |
 | `make migrate-dev` | Run database migrations for development |
 | `make createsuperuser-dev` | Create admin user for development |
 | `make collectstatic-dev` | Collect static files for development |
 | `make check-dev` | Validate development configuration |
-| `make up-prod` | Start production environment with .env.prod |
+| `make up-prod` | Start production environment with .env.prod (uses unified gunicorn.prod.conf.py) |
 | `make migrate-prod` | Run database migrations for production |
 | `make createsuperuser-prod` | Create admin user for production |
 | `make collectstatic-prod` | Collect static files for production |
@@ -293,23 +300,24 @@ The production setup includes:
 
 ### Caddy Configuration
 - **Development**: Simple reverse proxy to localhost:8000
-- **Production**: Domain configuration with static file handling
+- **Production**: Domain configuration (`daviderizzello.me`) with direct static file serving
 
 ### Gunicorn Configuration
-- **Development**: 3 workers, auto-reload enabled
-- **Production**: CPU-optimized worker count, timeout settings
+- **Unified Config**: Single configuration file (`gunicorn.prod.conf.py`) with environment-based behavior
+- **Development**: Auto-reload enabled, 3 workers (via `gunicorn.dev.conf.py`)
+- **Production**: CPU-optimized worker count (CPU count * 2 + 1), no auto-reload, 120s timeout
 
 ### Static Files
-- Development: Served by Django
-- Production: Served by Caddy with WhiteNoise fallback
+- **Development**: Served by Django
+- **Production**: Served directly by Caddy from `/home/dr/DavideRizzello.me/personal_website/staticfiles`
 
 ## 📈 Performance
 
 ### Production Optimizations
-- Multiple Gunicorn workers
-- Static file compression and caching
+- CPU-optimized Gunicorn workers (CPU count * 2 + 1)
+- Direct static file serving by Caddy (no Django overhead)
 - Database connection pooling
-- Optimized static file serving
+- SSL termination and reverse proxy optimization
 
 ### Monitoring
 - Process management via PID files
