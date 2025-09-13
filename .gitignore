@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Django
+db.sqlite3
+*.log
+staticfiles/
+media/
+
+# Environment & config
+.env
+*.env
+.env.*
+!*.env.example
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Virtual environments
+venv/
+.envrc
+.venv/
+env/
+ENV/
+
+# Environment files
+.env
+.env.*
+
+
+# Coverage & test
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+*.py,cover
+.pytest_cache/
+.tox/
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# Node (se usi front-end con npm/yarn dentro lo stesso repo)
+node_modules/

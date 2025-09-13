@@ -1,0 +1,13 @@
+daviderizzello.me {
+    reverse_proxy 127.0.0.1:8000
+
+    handle_path /static/* {
+        root * /home/youruser/personal_website/staticfiles
+        file_server
+    }
+
+    handle_path /media/* {
+        root * /home/youruser/personal_website/media
+        file_server
+    }
+}
