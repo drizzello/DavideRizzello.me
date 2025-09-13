@@ -1,8 +1,8 @@
 daviderizzello.me {
     reverse_proxy 127.0.0.1:8000
 
-    handle_path /static/* {
-        root * /home/youruser/personal_website/staticfiles
+    handle /static/* {
+        root * /home/dr/DavideRizzello.me/personal_website/staticfiles
         file_server
     }
 
