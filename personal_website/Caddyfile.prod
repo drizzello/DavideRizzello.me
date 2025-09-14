@@ -1,7 +1,7 @@
 daviderizzello.me {
     reverse_proxy 127.0.0.1:8000
 
-    handle /static/* {
+    handle_path /static/* {
         root * /home/dr/DavideRizzello.me/personal_website/staticfiles
         file_server
     }
@@ -12,7 +12,6 @@ daviderizzello.me {
     }
 }
  
-
 admin.daviderizzello.me {
     reverse_proxy 127.0.0.1:8000
 }
