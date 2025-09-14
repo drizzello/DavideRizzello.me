@@ -1,8 +1,88 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Davide Rizzello - Developer & Writer{% endblock %}
 
 {% block content %}
-    <h2>Benvenuto!</h2>
-    <p>Ci sono {{ count }} articoli nel database 📚</p>
+<div class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Hi, I'm <span class="highlight">Davide Rizzello</span></h1>
+        <p class="hero-subtitle">Developer, Writer & Digital Craftsman</p>
+        <p class="hero-description">
+            I build things with code and share thoughts through writing. 
+            Currently exploring the intersection of technology and creativity.
+        </p>
+        <div class="hero-actions">
+            <a href="#about" class="btn btn-primary">About Me</a>
+            <a href="#blog" class="btn btn-secondary">Read Blog</a>
+        </div>
+    </div>
+</div>
+
+<section id="about" class="section">
+    <div class="container">
+        <h2>About</h2>
+        <div class="about-content">
+            <p>
+                I'm a passionate developer who loves creating digital experiences 
+                and sharing knowledge through writing. When I'm not coding, 
+                you'll find me exploring new technologies, writing about my experiences, 
+                or contributing to open source projects.
+            </p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">{{ count }}</span>
+                    <span class="stat-label">Articles Published</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5+</span>
+                    <span class="stat-label">Years Coding</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Ideas in Progress</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="blog" class="section section-alt">
+    <div class="container">
+        <h2>Latest Thoughts</h2>
+        <p class="section-description">
+            I write about development, technology, and the creative process. 
+            Here are some of my recent articles.
+        </p>
+        <div class="blog-preview">
+            <div class="blog-card">
+                <h3>Coming Soon</h3>
+                <p>New articles are being prepared. Check back soon for fresh content!</p>
+                <span class="blog-date">Stay tuned</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="section">
+    <div class="container">
+        <h2>Get In Touch</h2>
+        <p class="section-description">
+            Have a project in mind or just want to chat? I'd love to hear from you.
+        </p>
+        <div class="contact-links">
+            <a href="mailto:hello@daviderizzello.me" class="contact-link">
+                <span class="contact-icon">✉️</span>
+                hello@daviderizzello.me
+            </a>
+            <a href="https://github.com/daviderizzello" class="contact-link" target="_blank" rel="noopener">
+                <span class="contact-icon">🐙</span>
+                GitHub
+            </a>
+            <a href="https://linkedin.com/in/daviderizzello" class="contact-link" target="_blank" rel="noopener">
+                <span class="contact-icon">💼</span>
+                LinkedIn
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}

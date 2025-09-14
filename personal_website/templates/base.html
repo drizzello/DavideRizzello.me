@@ -3,21 +3,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}My Website{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}Davide Rizzello - Developer, Writer & Digital Craftsman. Building things with code and sharing thoughts through writing.{% endblock %}">
+    <meta name="author" content="Davide Rizzello">
+    <title>{% block title %}Davide Rizzello - Developer & Writer{% endblock %}</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}Davide Rizzello - Developer & Writer{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Developer, Writer & Digital Craftsman. Building things with code and sharing thoughts through writing.{% endblock %}">
+    <meta property="og:url" content="https://daviderizzello.me">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="{% block twitter_title %}Davide Rizzello - Developer & Writer{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Developer, Writer & Digital Craftsman. Building things with code and sharing thoughts through writing.{% endblock %}">
+    
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>My Website 🚀</h1>
-    </header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">Davide Rizzello</a>
+            <div class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#blog" class="nav-link">Blog</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
 
     <main>
         {% block content %}
         {% endblock %}
     </main>
 
-    <footer>
-        <p>© {{ year }} - Powered by Django</p>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; {{ year }} Davide Rizzello. All rights reserved.</p>
+            <p class="footer-subtitle">Built with Django & ❤️</p>
+        </div>
     </footer>
 </body>
 </html>
