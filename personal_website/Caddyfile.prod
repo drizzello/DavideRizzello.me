@@ -14,5 +14,13 @@ daviderizzello.me {
  
 
 admin.daviderizzello.me {
-    reverse_proxy 127.0.0.1:8000/admin/
+    reverse_proxy 127.0.0.1:8000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+    }
+    
+    # Rewrite all requests to /admin/ path
+    rewrite * /admin{path}
 }
